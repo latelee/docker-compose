@@ -1,0 +1,33 @@
+﻿version: '2'
+
+services:
+    registry:
+        # 镜像名，如果不存在，则从网络下载
+        image: latelee/registry 
+        # 容器名，注意，不要和已有容器重名
+        container_name: registry
+        #restart: always
+        # 数据卷挂载，前为主机，后为容器
+        volumes:
+            - /mnt/registry-data/:/var/lib/registry/
+        # 端口指定，前为主机，后为容器
+        ports:
+            - 5000:5000
+        networks:
+            - mygitlab-jenkins-net
+
+    registry-frontend:
+        image: latelee/registry-frontend 
+        container_name: registry-frontend
+        #restart: always
+        # 对外提供9800端口访问
+        ports:
+            - 9800:80
+        environment:
+            - ENV_DOCKER_REGISTRY_HOST=192.168.1.78 # 仓库中心的IP地址
+            - ENV_DOCKER_REGISTRY_PORT=5000 # 仓库中心的端口为5000
+        networks:
+            - mygitlab-jenkins-net
+networks:
+    mygitlab-jenkins-net: # 自定义的网络名称
+        driver: bridge  # 桥接方式
