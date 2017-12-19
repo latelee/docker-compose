@@ -6,7 +6,7 @@ services:
         image: latelee/registry 
         # 容器名，注意，不要和已有容器重名
         container_name: registry
-        #restart: always
+        restart: always
         # 数据卷挂载，前为主机，后为容器
         volumes:
             - /mnt/registry-data/:/var/lib/registry/
@@ -19,7 +19,7 @@ services:
     registry-frontend:
         image: latelee/registry-frontend 
         container_name: registry-frontend
-        #restart: always
+        restart: always
         # 对外提供9800端口访问
         ports:
             - 9800:80

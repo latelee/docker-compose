@@ -1,4 +1,4 @@
-﻿# gitlab & jenkins
+# gitlab & jenkins
 # Powered by Late Lee <li@latelee.org>
 #
 # yml版本为2
@@ -9,8 +9,8 @@ services:
         # 镜像名，如果不存在，则从网络下载，本文假设使用本地的镜像
         image: latelee/gitlab
         # 容器名，在运行名称是唯一的
-        container_name: mygitlab
-        #restart: always
+        container_name: gitlab
+        restart: always
         # 挂载数据卷
         volumes:
             - /mnt/gitlab_data/config:/etc/gitlab
@@ -21,29 +21,27 @@ services:
             - "80:80"
             - "9443:443"
             - "2222:22"
-        # 主机名(根据实际情况修改)
+        # 主机名 这个IP改为自己的主机IP
         hostname: "172.18.18.18"
         # 启动时执行的命令
-        command: /assets/wrapper
+        #command: /assets/wrapper
         # 自定义的网络（见下[网络配置]）
         networks:
             - mygitlab-jenkins-net
     # 第二个容器jenkins
     jenkins:
-        image: latelee/jenkins
-        container_name: myjenkins
-        #restart: always
+        image:  latelee/jenkins:maven
+        container_name: jenkins
+        restart: always
         volumes:
-            # 使用主机的docker服务
-            #- /var/run/docker.sock:/var/run/docker.sock
+            # 使用主机的docker服务(因为要在jenkins容器中运行docker)
+            - /var/run/docker.sock:/var/run/docker.sock
             # 使用数据盘的目录作为jenkins的工作目录
-            - /mnt/jenkins_home:/var/lib/jenkins
+            - /mnt/jenkins_home:/var/jenkins_home
         ports:
             # 端口映射
             - "9080:8080"
             - "50000:50000"
-        # 容器启动时运行的命令
-        command: ./jenkins.sh
         networks:
             - mygitlab-jenkins-net
 # 网络配置
