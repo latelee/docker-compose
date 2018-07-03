@@ -1,0 +1,44 @@
+version: "2"
+services:
+  nginx_all:
+    #image: lidch
+    image: nginx
+    container_name: nginx_all
+    volumes:
+      - $PWD/nginx:/etc/nginx
+    ports:
+      - 9800:80
+    networks:
+      - nginx
+
+  nginx_1:
+    #image: lidch
+    #image: tomcat
+    image: nginx
+    container_name: nginx_1
+    volumes:
+      #- $PWD/html1:/usr/local/apache2/htdocs/
+      #- $PWD/html1:/usr/local/tomcat/webapps/ROOT
+      - $PWD/html1:/usr/share/nginx/html
+    ports:
+      - 9801:80
+    networks:
+      - nginx
+
+  nginx_2:
+    #image: lidch
+    #image: tomcat
+    image: nginx
+    container_name: nginx_2
+    volumes:
+      #- $PWD/html2:/usr/local/apache2/htdocs/
+      #- $PWD/html2:/usr/local/tomcat/webapps/ROOT
+      - $PWD/html2:/usr/share/nginx/html
+    ports:
+      - 9802:80
+    networks:
+      - nginx
+
+networks:
+    nginx:
+      driver: bridge
