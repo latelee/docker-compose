@@ -1,0 +1,10 @@
+version: '2'
+services:
+    tomcat:
+        image: tomcat:8.0.51-jre8-slim
+        container_name: tomcat
+        #restart: always
+        volumes:
+            - $PWD/webapps:/usr/local/tomcat/webapps/ROOT
+        ports:
+            - "8080:8080"
