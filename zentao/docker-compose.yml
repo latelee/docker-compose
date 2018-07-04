@@ -1,0 +1,21 @@
+# zentao docker-compose file
+# by Late Lee<li@latelee.org>
+
+version: "2"
+services: 
+  zentao:
+    image: latelee/zentao
+    container_name: zentao
+    ports:
+      - "9070:80"
+      #- "3307:3306"
+    environment:
+    # specifies you own account and password.
+      USER: "admin"
+      PASSWD: "12345678"
+      BIND_ADDRESS: "false"
+      SMTP_HOST: "163.177.90.125 smtp.exmail.qq.com"
+    volumes:
+    # specifies the path replace "./data".
+      - ./data:/opt
+    restart: always
