@@ -38,6 +38,10 @@ services:
             - /var/run/docker.sock:/var/run/docker.sock
             # 使用数据盘的目录作为jenkins的工作目录
             - /mnt/jenkins_home:/var/jenkins_home
+            # 交叉编译器目录
+            - /opt/arm:/opt/arm
+        environment:
+            - PATH=$PATH:/opt/arm/gcc-linaro-5.4.1-2017.05-x86_64_arm-linux-gnueabihf/bin
         ports:
             # 端口映射
             - "9080:8080"
