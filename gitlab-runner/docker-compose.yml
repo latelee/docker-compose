@@ -1,0 +1,45 @@
+version: '2'
+services:
+    llgitlab:
+        image: gitlab/gitlab-ce:13.10.0-ce.0
+        container_name: llgitlab
+        restart: always
+        volumes:
+            - ./gitlab_data/config:/etc/gitlab
+            - ./gitlab_data/logs:/var/log/gitlab
+            - ./gitlab_data/data:/var/opt/gitlab
+        environment:
+            - TZ=Asia/Shanghai
+        ports:
+            - "8888:80"
+            - "8443:443"
+            #- "2222:22"
+        hostname: "10.20.6.98"
+        #command: /assets/wrapper
+        networks:
+            - llgitlab-net
+
+    llgitlab-runner:
+        image: gitlab/gitlab-runner:alpine-v13.10.0
+        container_name: llgitlab-runner
+        restart: always
+        volumes:
+            - ./gitlab-runner/config:/etc/gitlab-runner
+            - /var/run/docker.sock:/var/run/docker.sock
+        #environment:
+        #    - CI_SERVER_URL=http://10.20.6.98:8888/ci
+        #    - RUNNER_TOKEN=5ph8JREzhixSz4WKgF5c
+        #    - RUNNER_DESCRIPTION=myrunner
+        #    - RUNNER_EXECUTOR=shell
+        #ports:
+        #    - "8888:80"
+        #    - "8443:443"
+        #hostname: "10.20.6.98"
+        #command: /assets/wrapper
+        depends_on:
+            - llgitlab
+        networks:
+            - llgitlab-net
+networks:
+    llgitlab-net:
+        driver: bridge

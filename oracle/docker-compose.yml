@@ -1,0 +1,27 @@
+version: '2'
+
+services:
+  lloracle:
+    image: registry.cn-hangzhou.aliyuncs.com/latelee/database:19.3.0-ee
+    container_name: lloracle
+    shm_size: 2gb
+    restart: always
+    #command: 
+    volumes:
+      - ./oradata:/opt/oracle/oradata
+      - ./dbs:/opt/oracle/product/19c/dbhome_1/dbs
+      - ./admin:/opt/oracle/admin
+    environment:
+      - TZ=Asia/Shanghai
+      - ORACLE_SID=ORCLCDB
+      - ORACLE_PDB=ORCLPDB1
+      - ORACLE_PWD=123456
+      - ORACLE_CHARACTERSET=ZHS16GBK
+    ports:
+      - 1521:1521
+    networks:
+      - lloracle-net
+
+networks:
+  lloracle-net:
+    driver: bridge

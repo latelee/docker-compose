@@ -1,0 +1,23 @@
+version: '2'
+
+services:
+  llmysql:
+    image: mysql:5.7
+    container_name: llmysql
+    restart: always
+    command: ['mysqld', '--character-set-server=utf8mb4', '--collation-server=utf8mb4_unicode_ci', '--explicit_defaults_for_timestamp=false', '--lower_case_table_names=1']
+    volumes:
+        - ./mysqldata:/var/lib/mysql
+    environment:
+        - TZ=Asia/Shanghai
+        - MYSQL_ROOT_PASSWORD=123456
+        - MYSQL_USER=latelee
+        - MYSQL_PASSWORD=123456
+    ports:
+        - "3306:3306"
+    networks:
+      - mysql-net
+
+networks:
+  mysql-net:
+    driver: bridge
